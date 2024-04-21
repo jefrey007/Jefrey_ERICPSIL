@@ -35,6 +35,6 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         port: 22
         script: |
-          cd /path/to/your/app
+          cd app.py
           git pull origin main
           sudo systemctl restart myapp.service

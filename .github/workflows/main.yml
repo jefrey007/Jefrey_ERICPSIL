@@ -31,7 +31,7 @@ jobs:
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USERNAME }}
-        key: ~/.ssh/ec2_private_key
+        key: ${{ secrets.EC2_PRIVATE_KEY }}
         port: 22
         script: |
           cd /home/jefrey007/Jefrey_ERICPSIL

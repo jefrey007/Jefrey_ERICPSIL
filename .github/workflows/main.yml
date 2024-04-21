@@ -27,21 +27,45 @@ jobs:
       run: |
         python -m unittest discover
         
-    - name: Decode and save SSH private key
+    - name: Decode SSH private key
       run: |
-        echo "${{ secrets.EC2_PRIVATE_KEY_BASE64 }}" | base64 -d > ~/.ssh/ec2_private_key
+        echo "-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAmSNowO5WQO5VJK78zaVH5j0iUaFMk537TaQRH1XrumiBb0D2
+nvPWnPHEAbFF3VrKvdoCUJtpxCtH9oFA4QA2ShL2sdhm6qtmI4pxC3UjsVu21H0A
+bf4voQ1tm5en2BwtZBxZJpmWWnNzQJhr38LXsUtIW6yfCJFF9fR/H4zW8OvzyLcB
+BH3UEk7p0nH8xWYdRawZXNVy2Ar5nOOzy2oNpj7FYkJb/uoYcnfrzI3ID8Loe7jc
+KfnOzO5DQuyFkOanq1wSKU7oynePQ0tXm5VUdDslUbSFhOnBMClZDYMy5j/N/QHs
+JDUFXYegj6i1M30T1THFhQVE1O+MknRjxO7AiQIDAQABAoIBAQCG15oGwBatB+9q
+5LZvsciUoGIWtMwD84jzvbLh/7sYoarPNsmx/w2Lloq73seg+LAq6cs+BQrllCLC
+mN9y/8fOA9K7mMxOeGvwgZe2ugeaxSJBCmyVbcusqXFJHwnJDk6dpySNC5JLxPrH
+9y6NkjhwwdRN/LrwRVLwFsDVHCOrcQs5yvI8bC9JuW3C8Y1I/uFpPtPdP+TnznA+
+ISwaswgyXu/rISe0nGmImxoLIC4esZMKPT9faSwhFwS0KzITB/c487QCWn6aNyHr
+2vwKSngsh8uJTB5VG/3Pak3kYUdga1+alqGpP6xaa78EfjHQxPja9+IHdG5SXSeF
+Cubx76GxAoGBANEs6UOvTdGRAfATNSSUZN80pjFK+bTD/uJzAQSaMdh8zVnkAKpE
+jcLsTDuoMdto8kXIB7MtQkObKHn3s9vpP/Qby6tHnFqK4tHzeUNZJVOQG7PuRl5f
+kZhHoBCy6vTnwSqlWLa57hezzQMtbXsB5HFT+rfUxFHnBnBG2njHOmdNAoGBALtr
+NpJF+VNz8Ko2jo3NgAS6XqFOuoTiN+Am9KwPlWrNfADeZc9jtA8yZ0f4V5JIQ1o/
+CU4EhtYUsC2wUGHL12+5BU4NTHcrB31712u49RHdMG3JKa+qIuGgKLowMnfFx2eu
+GpH+q8hk38wOUvWq+MFztBsKOy7Qhwo2ZPH9+PgtAoGBALFZ0NVQdzxuJCR3RKGl
+J/mP3DEDDsDTRPKe64gJbKXO+xVyGZZD1aYlT2VtcAhF7NR5iv3CK+LCVQlEmbyl
+AVJplr+8Ubb69uFn+7K8jMdS8goWxpcRlJJ2eCJwcIIBVWhhFNyovFRgYDyHccHP
+ku77cyIWRfXjWTQs/uNUmBIpAoGAER8LPjOcQk5uJu6S+UtTrZrk+DF8ApWz6wtE
+AM/vo3EgKegnPtnp4hWFr+J1BY0Kch0eGX16X+ZF7faUcUqw5KjvXiEC4kQRDBqb
+JGEiKj6dpPnikASn6Rq7fb7XbW+o9sTF8p5kTQtCEp8gXwb+cJXEV1AI9g7gt0Me
+16iO7QUCgYAURno5sqUjUi/uKuaVKPsWp8jpTU7J5bR9kzq5Styd1Lg83gjwKaVX
+9MUUFmmFiO1XONVM8gOP822TKIMhxenpkKUA1lXlLJO23OCl5sgN7VzrHwXhkRmo
+KFkYjfCKrD1wZVHeiew2yyt+JHTR+tUXIuThjhq+jYST9Q0/WrASlw==
+-----END RSA PRIVATE KEY-----" | base64 -d > ~/.ssh/ec2_private_key
         chmod 600 ~/.ssh/ec2_private_key
-      if: secrets.EC2_PRIVATE_KEY_BASE64 != ''
-
+           
     - name: SSH into EC2 Instance
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USERNAME }}
-        key: C:\Users\jefre\Downloads\Erijefrey.pem  # Use the decoded private key file
+        key: ~/.ssh/ec2_private_key
         port: 22
         script: |
-          git clone https://github.com/jefrey007/Jefrey_ERICPSIL.git /home/ubuntu/Jefrey_ERICPSIL
-          cd /home/ubuntu/Jefrey_ERICPSIL
+          cd app.py
           git pull origin main
           sudo systemctl restart myapp.service

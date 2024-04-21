@@ -23,17 +23,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Create SSH directory
-      run: mkdir -p ~/.ssh
-      
-    - name: SSH into EC2 instance
-      uses: appleboy/ssh-action@master
-        with:
-        host: 3.110.28.84
-        username: Jefrey_Eric
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22
-        script: |
-        cd /home/jefrey007/Jefrey_ERICPSIL
-        git pull origin main
-        sudo systemctl restart myapp.service
+    - name: Run tests
+      run: |
+        python -m unittest discover
+        

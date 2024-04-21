@@ -27,14 +27,21 @@ jobs:
       run: |
         python -m unittest discover
         
+    - name: Decode and save SSH private key
+      run: |
+        echo "${{ secrets.EC2_PRIVATE_KEY_BASE64 }}" | base64 -d > ~/.ssh/ec2_private_key
+        chmod 600 ~/.ssh/ec2_private_key
+      if: secrets.EC2_PRIVATE_KEY_BASE64 != ''
+
     - name: SSH into EC2 Instance
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USERNAME }}
-        key: ${{ secrets.EC2_PRIVATE_KEY }}
+        key: C:\Users\jefre\Downloads\Erijefrey.pem  # Use the decoded private key file
         port: 22
         script: |
-          cd app.py
+          git clone https://github.com/jefrey007/Jefrey_ERICPSIL.git /home/ubuntu/Jefrey_ERICPSIL
+          cd /home/ubuntu/Jefrey_ERICPSIL
           git pull origin main
           sudo systemctl restart myapp.service

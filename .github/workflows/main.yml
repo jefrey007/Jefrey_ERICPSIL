@@ -26,10 +26,7 @@ jobs:
     - name: Run tests
       run: |
         python -m unittest discover
-        
-    - name: Decode SSH private key
-      run: echo "${{ secrets.EC2_PRIVATE_KEY_BASE64 }}" | base64 -d > ~/.ssh/ec2_private_key && chmod 600 ~/.ssh/ec2_private_key
-   
+           
     - name: SSH into EC2 Instance
       uses: appleboy/ssh-action@master
       with:

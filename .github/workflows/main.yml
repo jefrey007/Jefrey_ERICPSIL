@@ -25,15 +25,15 @@ jobs:
 
     - name: Create SSH directory
       run: mkdir -p ~/.ssh
-
-    - name: SSH into EC2 Instance
+      
+    - name: SSH into EC2 instance
       uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USERNAME }}
-        key: ${{ secrets.EC2_PRIVATE_KEY }}
+        with:
+        host: 3.110.28.84
+        username: ubuntu
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          cd /home/jefrey007/Jefrey_ERICPSIL
-          git pull origin main
-          sudo systemctl restart myapp.service
+        cd /home/jefrey007/Jefrey_ERICPSIL
+        git pull origin main
+        sudo systemctl restart myapp.service
